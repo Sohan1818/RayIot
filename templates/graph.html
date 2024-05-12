@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Data Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="dataChart" width="800" height="400"></canvas>
+    <script>
+        var ctx = document.getElementById('dataChart').getContext('2d');
+        var timestamps = {{ timestamps|tojson }};
+        var temperatures = {{ temperatures|tojson }};
+        var humidity = {{ humidity|tojson }};
+        var pressure = {{ pressure|tojson }};
+        var data = {
+            labels: timestamps,
+            datasets: [{
+                label: 'Temperature (°C)',
+                data: temperatures,
+                borderColor: 'rgb(255, 99, 132)',
+                borderWidth: 1,
+                fill: false
+            }, {
+                label: 'Humidity (%)',
+                data: humidity,
+                borderColor: 'rgb(54, 162, 235)',
+                borderWidth: 1,
+                fill: false
+            }, {
+                label: 'Pressure (hPa)',
+                data: pressure,
+                borderColor: 'rgb(75, 192, 192)',
+                borderWidth: 1,
+                fill: false
+            }]
+        };
+        var options = {
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        unit: 'second'
+                    }
+                }]
+            }
+        };
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: options
+        });
+    </script>
+</body>
+</html>
